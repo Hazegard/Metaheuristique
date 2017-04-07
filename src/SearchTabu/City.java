@@ -2,10 +2,10 @@ package SearchTabu;
 
 public class City {
 	int id;
-	int x;
-	int y;
+	float x;
+	float y;
 	
-City setCity(int Id, int X, int Y){
+City setCity(int Id, float X, float Y){
 		this.x=X;
 		this.y=Y;
 		this.id=Id;
@@ -20,18 +20,18 @@ int getId(){
 	return id;
 }
 
-void setX(int X){
+void setX(float X){
 	x=X;
 }
-void setY(int Y){
+void setY(float Y){
 	y=Y;
 }
 
-int getX(){
+float getX(){
 	return x;
 }
 
-int getY(){
+float getY(){
 	return y;
 }
 }

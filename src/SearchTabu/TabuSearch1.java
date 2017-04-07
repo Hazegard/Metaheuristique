@@ -11,20 +11,21 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.lang.Math;
 
-public class TabuSearch {
+public class TabuSearch1 {
 
 	// Définir les villes
 	static int nbVilles = 5;
-	static int nbTests = 100000;
+	static int nbTests = 100;
+	@SuppressWarnings("null")
 	public static void main(String[] args) {
 		TabuSearch tabuSearch = new TabuSearch();
-		String csvFile = "D:\\Maxime\\Documents\\Java\\SearchTabu\\src\\SearchTabu\\villes1.csv";
+		String csvFile = "D:\\Maxime\\Documents\\Java\\SearchTabu\\src\\SearchTabu\\villes.csv";
 		City ville = new City();
 		List<City> Villes = new ArrayList<City>();
 		List<Ordre> ordre = new ArrayList<Ordre>();
 		double[][] Distance = new double[nbVilles][nbVilles];
 		int NumOrdreFinal[] = new int[nbVilles];
-		//int[] ordre0 = null;
+		int[] ordre0 = null;
 
 		String line = "";
 		String csvSplitBy = ";";
@@ -33,12 +34,11 @@ public class TabuSearch {
 			while((line = br.readLine()) != null){ 
 				nbVilles+=1;
 				String[] coords = line.split(csvSplitBy);
-				Villes.add(new City().setCity(nbVilles, Float.parseFloat(coords[0]), Float.parseFloat(coords[1])));
+				Villes.add(new City().setCity(nbVilles, (int) Float.parseFloat(coords[0]), (int)Float.parseFloat(coords[1])));
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		int[] ordre0 = new int[nbVilles];
 		for(int i=0;i<nbVilles;i++){
 			ordre0[i]=i;
 		}
@@ -46,25 +46,14 @@ public class TabuSearch {
 		
 		
 		ordre.add(new Ordre().setOrdre(ordre0,nbVilles));
-		NumOrdreFinal = ordre0;
 		Distance = tabuSearch.evalDistance(Villes);
-		
 		double parcours = tabuSearch.evalParcours(ordre.get(0).getOrdre(), Distance);
-		System.out.println(parcours);
 		for (int j = 1; j < nbTests; j++) {
-			Ordre testOrdre=tabuSearch.swapCity(ordre,j-1);
-			//ordre.add(tabuSearch.swapCity(ordre,j-1));
-			double tempParcours = tabuSearch.evalParcours(testOrdre.getOrdre(), Distance);
+			ordre.add(tabuSearch.swapCity(ordre,j-1));
+			double tempParcours = tabuSearch.evalParcours(ordre.get(j).getOrdre(), Distance);
 			if (parcours > tempParcours) {
 				parcours = tempParcours;
-				NumOrdreFinal = testOrdre.getOrdre();
-				ordre.add(testOrdre);
-				System.out.println("============================");
-				System.out.println("Tour n° = "+j+"\nDistance= "+parcours+"\nOrdre = "+Arrays.toString(NumOrdreFinal));
-				System.out.println("============================");
-			}else{
-				ordre.add(ordre.get(j-1));
-				System.out.println("Tour n° = "+j+"\nDistance= "+tempParcours+"\nOrdre = "+Arrays.toString(ordre.get(j).getOrdre()));
+				NumOrdreFinal = ordre.get(j).getOrdre();
 			}
 			
 		}
