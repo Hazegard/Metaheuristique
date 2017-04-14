@@ -1,4 +1,6 @@
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Vector;
 import java.io.BufferedReader;
@@ -32,6 +34,7 @@ static double[][] phero = new double[MAX_CITIES][MAX_CITIES];
 static String csvFile ="D:\\Maxime\\Documents\\Java\\SearchTabu\\src\\SearchTabu\\villes2.csv";
 static double best;// = MAX_TOUR;
 static int bestIndex;
+static int[] bestPath;
 
 static void init(){
     //Ants[] ants = new Ants[MAX_ANTS];
@@ -92,6 +95,7 @@ static void resetAnts(){
         if(ants[ant].getTourLength()<best){
             best = ants[ant].getTourLength();
             bestIndex = ant;
+            bestPath = ants[ant].getPath().clone();
         }
 
         ants[ant].setNextCIty(-1);
@@ -284,6 +288,7 @@ double[][] evalDistance(List<City> Villes,int nbCities) {
         }
     }
 System.out.println("\nBest tour : "+best+"\n");
+    System.out.println(Arrays.toString(bestPath));
  }
 
 }
