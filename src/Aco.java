@@ -84,9 +84,7 @@ static void init(){
             ants[ant]=new Ants(to++,-1,1,tempTable,tempPath,0);
             ants[ant].setOnePath(ants[ant].getCurrentCity(),0);
             ants[ant].setOneTable(1,ants[ant].getCurrentCity());
-            //System.out.print("Bite\n");
         }
-    //System.out.print("Couille\n");
 }
 
 static void resetAnts(){
@@ -96,6 +94,10 @@ static void resetAnts(){
             best = ants[ant].getTourLength();
             bestIndex = ant;
             bestPath = ants[ant].getPath().clone();
+            System.out.println("====================");
+            System.out.println("Best tour : "+best);
+            System.out.println(Arrays.toString(bestPath));
+            System.out.println("====================");
         }
 
         ants[ant].setNextCIty(-1);
@@ -120,14 +122,7 @@ static void resetAnts(){
 }
 
 static double antProd(int from, int to){
-    double test4 = distance[from][to];
-    int test5=from;
-    int test6=to;
-    double test3 = 1/distance[from][to];
-    double test1=Math.pow(phero[from][to],ALPHA);
-    double test2=Math.pow(1/distance[from][to],BETA);
-    double test =(Math.pow(phero[from][to],ALPHA)* Math.pow((1/distance[from][to]),BETA));
-    return test;
+    return (Math.pow(phero[from][to],ALPHA)* Math.pow((1/distance[from][to]),BETA));
 }
 
 static int selectNextCity(int ant){
@@ -145,18 +140,13 @@ static int selectNextCity(int ant){
     while(true){
         double p;
         to++;
-        //System.out.print("Chatte\n");
         if(to>=MAX_CITIES){
             to=0;
         }
         int test = ants[ant].getTable()[to];
         if(ants[ant].getTable()[to]==0){
             p=antProd(from,to)/denom;
-            if(p>0.9999999999){
-                int jk=50;
-            }
             double x = Math.random()/30;
-            //System.out.println("\n"+x+";"+p);
             if(x<p){
                 break;
             }
@@ -194,8 +184,6 @@ static void sortAnts(){
     for(int i=0;i<MAX_CITIES;i++){
             rankAnts[i] = new Ants(ants[i].getCurrentCity(),ants[i].getNextCIty(),ants[i].getPathIndex(),ants[i].getTable(),ants[i].getPath(),ants[i].getTourLength());
     }
-    //System.arraycopy(ants,0,rankAnts,1);
-
     for(int j =0; j<MAX_CITIES;j++){
         for(int k=j+1;k<MAX_CITIES;k++){
             if(rankAnts[j].getTourLength()>=rankAnts[k].getTourLength()){
@@ -228,8 +216,6 @@ static void updateTrails(){
                 from = rankAnts[ant].getPath()[i];
                 to = rankAnts[ant].getPath()[0];
             }
-            System.out.println(rankAnts[ant].getTourLength());
-            System.out.println(from+";"+to+";"+rankAnts[ant].getPath()[i]);
             phero[from][to]+=(RANK_W-ant)*(QVAL/rankAnts[ant].getTourLength());
             phero[to][from]=phero[from][to];
         }
@@ -272,10 +258,6 @@ double[][] evalDistance(List<City> Villes,int nbCities) {
     int curTime=0;
     init();
     while(curTime++<MAX_TIME){
-        System.out.println(curTime);
-        if(curTime==14){
-            int test=45;
-        }
         if(moveAnts()==0){
             int jk=50;
             sortAnts();
@@ -284,10 +266,12 @@ double[][] evalDistance(List<City> Villes,int nbCities) {
             if(curTime!=MAX_TIME){
                 resetAnts();
             }
-            System.out.println("Current time : "+curTime+" \n"+best);
+           // System.out.println("Current time : "+curTime+" \n"+best);
         }
     }
-System.out.println("\nBest tour : "+best+"\n");
+     System.out.println("====================");
+     System.out.println("====================");
+    System.out.println("\nBest tour : "+best+"\n");
     System.out.println(Arrays.toString(bestPath));
  }
 
