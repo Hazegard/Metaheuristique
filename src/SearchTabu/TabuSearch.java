@@ -13,12 +13,12 @@ import java.lang.Math;
 
 public class TabuSearch {
 
-	// Définir les villes
-	static int nbVilles = 5;
-	static int nbTests = 100000;
+	// Definir les villes
+	static int nbVilles = 14;
+	static int nbTests = 1000;
 	public static void main(String[] args) {
 		TabuSearch tabuSearch = new TabuSearch();
-		String csvFile = "D:\\Maxime\\Documents\\Java\\SearchTabu\\src\\SearchTabu\\villes1.csv";
+		String csvFile = "D:\\Maxime\\Documents\\Java\\SearchTabu\\src\\SearchTabu\\villes2.csv";
 		City ville = new City();
 		List<City> Villes = new ArrayList<City>();
 		List<Ordre> ordre = new ArrayList<Ordre>();
@@ -60,11 +60,11 @@ public class TabuSearch {
 				NumOrdreFinal = testOrdre.getOrdre();
 				ordre.add(testOrdre);
 				System.out.println("============================");
-				System.out.println("Tour n° = "+j+"\nDistance= "+parcours+"\nOrdre = "+Arrays.toString(NumOrdreFinal));
+				System.out.println("Tour n= "+j+"\nDistance= "+parcours+"\nOrdre = "+Arrays.toString(NumOrdreFinal));
 				System.out.println("============================");
 			}else{
 				ordre.add(ordre.get(j-1));
-				System.out.println("Tour n° = "+j+"\nDistance= "+tempParcours+"\nOrdre = "+Arrays.toString(ordre.get(j).getOrdre()));
+				//System.out.println("Tour n = "+j+"\nDistance= "+tempParcours+"\nOrdre = "+Arrays.toString(ordre.get(j).getOrdre()));
 			}
 			
 		}
@@ -94,11 +94,12 @@ public class TabuSearch {
 			ordreTemp = ordre.get(j).getOrdre().clone();
 			int temp1 = ordreTemp[id1];
 			ordreTemp[id1]=ordreTemp[id2];
-			ordreTemp[id2]=temp1;		
+			ordreTemp[id2]=temp1;
 			diff1=true;
 			for(int i=0; i<ordre.size()-1;i++){
-				if(ordreTemp.equals(ordre.get(i))){
+				if(Arrays.equals(ordreTemp,ordre.get(i).getOrdre())){
 					diff1=false;
+					temp1=ordreTemp[id2];
 					ordreTemp[id2]=ordreTemp[id1];
 					ordreTemp[id1]=temp1;
 				}
