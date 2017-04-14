@@ -106,7 +106,8 @@ static void resetAnts(){
             to=0;
         }
 
-        ants[ant].setCurrentCity(1);
+        ants[ant].setCurrentCity(to++);
+        ants[ant].setPathIndex(1);
         ants[ant].setOnePath(ants[ant].getCurrentCity(),0);
 
         ants[ant].setOneTable(1,ants[ant].getCurrentCity());
