@@ -1,4 +1,6 @@
+import java.io.File;
 import java.lang.reflect.Array;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -31,63 +33,74 @@ static double[][] distance = new double[MAX_CITIES][MAX_CITIES];
 static double[][] phero = new double[MAX_CITIES][MAX_CITIES];
 
 
-static String csvFile ="D:\\Maxime\\Documents\\Java\\SearchTabu\\src\\SearchTabu\\villes2.csv";
+static String csvFile ="villes2.csv";
 static double best;// = MAX_TOUR;
 static int bestIndex;
 static int[] bestPath;
 
+
+
+
 static void init(){
-    //Ants[] ants = new Ants[MAX_ANTS];
-    //double[][] distance = new double[MAX_CITIES][MAX_CITIES];
-    //double[][] phero = new double[MAX_CITIES][MAX_CITIES];
-    //Ants[] ants = new Ants[MAX_ANTS];
     Aco aco = new Aco();
-        int to;
-        int ant;
+    int to;
+    int ant;
 
-
-        List<City> Cities = new ArrayList<City>();
-        String line = "";
-        String csvSplitBy = ";";
-        int nbCities = 0;
-        try (BufferedReader br = new BufferedReader(new FileReader(csvFile))) {
-            while ((line = br.readLine()) != null) {
-                nbCities += 1;
-                String[] coords = line.split(csvSplitBy);
-                Cities.add(new City(Float.parseFloat(coords[0]), Float.parseFloat(coords[1]), nbCities));
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
+    //On récupère une liste des villes à partir d'un fichier CSV
+    List<City> Cities = new ArrayList<City>();
+    String line = "";
+    String csvSplitBy = ";";
+    int nbCities = 0;
+    URL path = Aco.class.getResource(csvFile);
+    File file = new File(path.getFile());
+    try (BufferedReader br = new BufferedReader(new FileReader(file))) {
+        while ((line = br.readLine()) != null) {
+            nbCities += 1;
+            String[] coords = line.split(csvSplitBy);
+            Cities.add(new City(Float.parseFloat(coords[0]), Float.parseFloat(coords[1]), nbCities));
         }
-        MAX_CITIES = nbCities;
-        best = MAX_CITIES*100;
-        INIT_PHEROMON=(double) 1/MAX_CITIES;
+    } catch (IOException e) {
+        e.printStackTrace();
+    }
+    MAX_CITIES = nbCities;
+    best = MAX_CITIES*100;
+
+    //On initialise la matrice des phéromones
+    INIT_PHEROMON=(double) 1/MAX_CITIES;
     for(int i=0;i<MAX_CITIES;i++){
         for(int j=0;j<MAX_CITIES;j++){
             phero[i][j]=INIT_PHEROMON;
         }
     }
+    //Calcul de la matrice des distances
     distance=aco.evalDistance(Cities,nbCities);
 
-        to=0;
-        for(ant=0;ant<MAX_ANTS;ant++){
-            if(to==MAX_CITIES){
-                to=0;
-            }
-            //ants[ant].setCurrentCity(to++);
-            int[] tempTable = new int[MAX_CITIES];
-            int[] tempPath = new int[MAX_CITIES];
-            for(int from = 0; from <MAX_CITIES;from++){
-                tempTable[from]=0;
-                tempPath[from] = -1;
-            }
-            ants[ant]=new Ants(to++,-1,1,tempTable,tempPath,0);
-            ants[ant].setOnePath(ants[ant].getCurrentCity(),0);
-            ants[ant].setOneTable(1,ants[ant].getCurrentCity());
+    //Initialisation des fourmis
+    to=0;
+    for(ant=0;ant<MAX_ANTS;ant++){
+        if(to==MAX_CITIES){
+            to=0;
+        }
+        //ants[ant].setCurrentCity(to++);
+        int[] tempTable = new int[MAX_CITIES];
+        int[] tempPath = new int[MAX_CITIES];
+        for(int from = 0; from <MAX_CITIES;from++){
+            tempTable[from]=0;
+            tempPath[from] = -1;
+        }
+        ants[ant]=new Ants(to++,-1,1,tempTable,tempPath,0);
+        ants[ant].setOnePath(ants[ant].getCurrentCity(),0);
+        ants[ant].setOneTable(1,ants[ant].getCurrentCity());
         }
 }
 
+
+
+
 static void resetAnts(){
+    //On extrait les meilleurs temps, ainsi que le parcours de
+    //chaque fourmis avant de les réinitialiser
+    //afin de poursuivre la boucle
     int to=0;
     for(int ant =0; ant<MAX_ANTS;ant++){
         if(ants[ant].getTourLength()<best){
@@ -121,11 +134,19 @@ static void resetAnts(){
 
 }
 
-static double antProd(int from, int to){
-    return (Math.pow(phero[from][to],ALPHA)* Math.pow((1/distance[from][to]),BETA));
-}
+
+
+
+//static double antProd(int from, int to){
+//    //Calcul du choix de la fourmis
+//    return (Math.pow(phero[from][to],ALPHA)* Math.pow((1/distance[from][to]),BETA));
+//}
+
+
+
 
 static int selectNextCity(int ant){
+    //Choix de la prochaine ville
     int from, to;
     double denom=0;
 
@@ -133,7 +154,7 @@ static int selectNextCity(int ant){
 
     for(to=0;to<MAX_CITIES;to++){
         if(ants[ant].getTable()[to]==0){
-            denom+=antProd(from,to);
+            denom+=(Math.pow(phero[from][to],ALPHA)* Math.pow((1/distance[from][to]),BETA));
         }
     }
 
@@ -143,9 +164,8 @@ static int selectNextCity(int ant){
         if(to>=MAX_CITIES){
             to=0;
         }
-        int test = ants[ant].getTable()[to];
         if(ants[ant].getTable()[to]==0){
-            p=antProd(from,to)/denom;
+            p=(Math.pow(phero[from][to],ALPHA)* Math.pow((1/distance[from][to]),BETA))/denom;
             double x = Math.random()/30;
             if(x<p){
                 break;
@@ -155,7 +175,12 @@ static int selectNextCity(int ant){
     return to;
 }
 
+
+
+
 static int moveAnts(){
+    //Déplacement des fourmis:
+    //On met à jours les paramètres de chaque fourmis
     int moving = 0;
 
     for(int k =0;k<MAX_ANTS;k++){
@@ -178,7 +203,11 @@ static int moveAnts(){
     return moving;
 }
 
+
+
+
 static void sortAnts(){
+    //On tri les fourmis afinde mieux pouvoir mettre à jour les phéromones par la suite
     Ants tempAnt ;
 
     for(int i=0;i<MAX_CITIES;i++){
@@ -195,7 +224,11 @@ static void sortAnts(){
     }
 }
 
+
+
+
 static void updateTrails(){
+    //Mise à jour des phéromones sur chaque ville
     for(int from=0;from<MAX_CITIES;from++){
         for(int to=0;to<MAX_CITIES;to++){
             if(from!=to){
@@ -221,7 +254,7 @@ static void updateTrails(){
         }
     }
 
-    for(int i=0;i>MAX_CITIES;i++){
+    for(int i=0;i<MAX_CITIES;i++){
         if(i<MAX_CITIES-1){
             from = ants[bestIndex].getPath()[i];
             to = ants[bestIndex].getPath()[i+1];
@@ -240,7 +273,10 @@ static void updateTrails(){
     }
 }
 
+
+
 double[][] evalDistance(List<City> Villes,int nbCities) {
+    //Calcul une matrice des distance en ayant pour entrée la liste des villes avec leurs coordonnées
     double[][] Distance = new double[nbCities][nbCities];
     for (int i = 0; i < nbCities - 1; i++) {
         Distance[i][i] = 0;
@@ -253,6 +289,9 @@ double[][] evalDistance(List<City> Villes,int nbCities) {
     }
     return Distance;
 }
+
+
+
  public static void main(String[] args){
     final int MAX_TIME = 100;
     int curTime=0;

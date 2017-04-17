@@ -19,15 +19,6 @@ public class Ants {
         this.path=Path;
         this.tourLength = TourLength;
     }
-    /*Ants setAnt(int CurrentCity, int NextCity, int PathIndex, int[] Table, int[] Path, double TourLength){
-        this.currentCity=CurrentCity;
-        this.nextCIty=NextCity;
-        this.pathIndex=PathIndex;
-        this.table=Table;
-        this.path=Path;
-        this.tourLength = TourLength;
-        return this;
-    }*/
 
     void setCurrentCity(int CurrentCity){
         this.currentCity=CurrentCity;
@@ -78,6 +69,7 @@ public class Ants {
     int[] getPath(){
         return this.path;
     }
+    
     double getTourLength(){
         return tourLength;
     }
