@@ -1,3 +1,4 @@
+//Classe Ordre, prend comme paramètre un tableau décrivant l'ordre suivi
 public class Ordre {
 
 	int size;

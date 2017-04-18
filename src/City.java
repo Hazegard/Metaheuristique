@@ -1,3 +1,6 @@
+//Classe City:
+//Prend comme oaramètre un identifiant ainsi que les cordonnées
+
 public class City {
 	int id;
 	float x;
