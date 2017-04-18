@@ -1,4 +1,8 @@
 #! /bin/bash
+if ! [ -d bin/ ]
+then
+mkdir bin
+fi
 if [ -e bin/City.class ]
 then
 rm bin/City.class

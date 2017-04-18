@@ -1,4 +1,7 @@
 @echo off
+if not exist bin\ (
+mkdir bin\
+)
 if exist bin\Ants.class (
 	del bin\Ants.class
 )
