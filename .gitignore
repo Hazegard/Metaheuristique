@@ -1,1 +1,10 @@
-/bin/
+.git/
+
+.idea/
+
+out/
+
+Ants.iml
+
+bin/
+*.iml

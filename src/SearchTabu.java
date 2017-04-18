@@ -1,67 +1,65 @@
-package SearchTabu;
-
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
-import SearchTabu.City;
-
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.lang.Math;
 
-public class TabuSearch1 {
-
-	// Définir les villes
-	static int nbVilles = 5;
-	static int nbTests = 100;
-	@SuppressWarnings("null")
+public class SearchTabu {
+	// Definir les villes
+	static int nbVilles = 14;
+	static int nbTests = 1000;
 	public static void main(String[] args) {
-		TabuSearch tabuSearch = new TabuSearch();
-		String csvFile = "D:\\Maxime\\Documents\\Java\\SearchTabu\\src\\SearchTabu\\villes.csv";
 		City ville = new City();
-		List<City> Villes = new ArrayList<City>();
-		List<Ordre> ordre = new ArrayList<Ordre>();
-		double[][] Distance = new double[nbVilles][nbVilles];
-		int NumOrdreFinal[] = new int[nbVilles];
-		int[] ordre0 = null;
-
-		String line = "";
+		List<City> Villes = new ArrayList<>();
+		List<Ordre> ordre = new ArrayList<>();
+		double[][] Distance;
+		int NumOrdreFinal[];
+		String line;
 		String csvSplitBy = ";";
 		nbVilles=0;
-		try(BufferedReader br = new BufferedReader(new FileReader(csvFile))){
+		File file = new File("./data/villes.csv");
+		try(BufferedReader br = new BufferedReader(new FileReader(file))){
 			while((line = br.readLine()) != null){ 
 				nbVilles+=1;
 				String[] coords = line.split(csvSplitBy);
-				Villes.add(new City().setCity(nbVilles, (int) Float.parseFloat(coords[0]), (int)Float.parseFloat(coords[1])));
+				Villes.add(new City().setCity(nbVilles, Float.parseFloat(coords[0]), Float.parseFloat(coords[1])));
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		int[] ordre0 = new int[nbVilles];
 		for(int i=0;i<nbVilles;i++){
 			ordre0[i]=i;
 		}
-		
-		
-		
 		ordre.add(new Ordre().setOrdre(ordre0,nbVilles));
-		Distance = tabuSearch.evalDistance(Villes);
-		double parcours = tabuSearch.evalParcours(ordre.get(0).getOrdre(), Distance);
+		NumOrdreFinal = ordre0;
+		Distance = evalDistance(Villes);
+		double parcours = evalParcours(ordre.get(0).getOrdre(), Distance);
+		System.out.println(parcours);
 		for (int j = 1; j < nbTests; j++) {
-			ordre.add(tabuSearch.swapCity(ordre,j-1));
-			double tempParcours = tabuSearch.evalParcours(ordre.get(j).getOrdre(), Distance);
+			Ordre testOrdre=swapCity(ordre,j-1);
+			//ordre.add(tabuSearch.swapCity(ordre,j-1));
+			double tempParcours = evalParcours(testOrdre.getOrdre(), Distance);
 			if (parcours > tempParcours) {
 				parcours = tempParcours;
-				NumOrdreFinal = ordre.get(j).getOrdre();
+				NumOrdreFinal = testOrdre.getOrdre();
+				ordre.add(testOrdre);
+				System.out.println("============================");
+				System.out.println("Tour n= "+j+"\nDistance= "+parcours+"\nOrdre = "+Arrays.toString(NumOrdreFinal));
+				System.out.println("============================");
+			}else{
+				ordre.add(ordre.get(j-1));
+				//System.out.println("Tour n = "+j+"\nDistance= "+tempParcours+"\nOrdre = "+Arrays.toString(ordre.get(j).getOrdre()));
 			}
-			
 		}
 		System.out.println(parcours);
 		System.out.println(Arrays.toString(NumOrdreFinal));
 	}
 
-	Ordre swapCity(List<Ordre> ordre,int j) {
+	static Ordre swapCity(List<Ordre> ordre,int j) {
 		//List<Ordre> test = ordre;
 		boolean diff = false;
 		boolean diff1=false;
@@ -83,11 +81,12 @@ public class TabuSearch1 {
 			ordreTemp = ordre.get(j).getOrdre().clone();
 			int temp1 = ordreTemp[id1];
 			ordreTemp[id1]=ordreTemp[id2];
-			ordreTemp[id2]=temp1;		
+			ordreTemp[id2]=temp1;
 			diff1=true;
 			for(int i=0; i<ordre.size()-1;i++){
-				if(ordreTemp.equals(ordre.get(i))){
+				if(Arrays.equals(ordreTemp,ordre.get(i).getOrdre())){
 					diff1=false;
+					temp1=ordreTemp[id2];
 					ordreTemp[id2]=ordreTemp[id1];
 					ordreTemp[id1]=temp1;
 				}
@@ -103,7 +102,7 @@ public class TabuSearch1 {
 		return new Ordre().setOrdre(ordreTemp,ordre.get(j).getSize());
 	}
 
-	double[][] evalDistance(List<City> Villes) {
+	static double[][] evalDistance(List<City> Villes) {
 		double[][] Distance = new double[nbVilles][nbVilles];
 		for (int i = 0; i < nbVilles - 1; i++) {
 			Distance[i][i] = 0;
@@ -118,7 +117,7 @@ public class TabuSearch1 {
 	}
 
 	// Faire fonction calcul du parcours
-	double evalParcours(int[] ordre, double distance[][]) {
+	static double evalParcours(int[] ordre, double distance[][]) {
 		double parcours = 0;
 		for (int i = 0; i < ordre.length-1; i++) {
 			parcours += distance[ordre[i]][ordre[i + 1]];

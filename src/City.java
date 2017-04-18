@@ -1,5 +1,3 @@
-package SearchTabu;
-
 public class City {
 	int id;
 	float x;

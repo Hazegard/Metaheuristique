@@ -1,5 +1,3 @@
-package SearchTabu;
-
 public class Ordre {
 
 	int size;
