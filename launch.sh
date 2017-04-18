@@ -1,2 +1,2 @@
 #!/bin/bash
-java -cp src/. Aco
+java -cp bin/. Aco

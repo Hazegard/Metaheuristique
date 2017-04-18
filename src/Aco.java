@@ -52,7 +52,7 @@ static void init(){
     String csvSplitBy = ";";
     int nbCities = 0;
     URL path = Aco.class.getResource(csvFile);
-    File file = new File(path.getFile());
+    File file = new File("./data/villes.csv");
     try (BufferedReader br = new BufferedReader(new FileReader(file))) {
         while ((line = br.readLine()) != null) {
             nbCities += 1;

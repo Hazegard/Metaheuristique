@@ -8,5 +8,5 @@ if exist src\Aco.class (
 if exist src\City.class (
 	del src\City.class
 )
-javac src\City.java src src\Ants.java src\Aco.java
+javac -d bin\ src\City.java src\Ants.java src\Aco.java
 pause
