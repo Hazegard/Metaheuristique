@@ -9,10 +9,9 @@ import java.lang.Math;
 
 public class SearchTabu {
 	// Definir les villes
-	static int nbVilles = 14;
-	static int nbTests = 1000;
+    private static int nbVilles = 14;
 	public static void main(String[] args) {
-		City ville = new City();
+        int nbTests = 1000;
 		List<City> Villes = new ArrayList<>();
 		List<Ordre> ordre = new ArrayList<>();
 		double[][] Distance;
@@ -27,7 +26,7 @@ public class SearchTabu {
 			while((line = br.readLine()) != null){ 
 				nbVilles+=1;
 				String[] coords = line.split(csvSplitBy);
-				Villes.add(new City().setCity(nbVilles, Float.parseFloat(coords[0]), Float.parseFloat(coords[1])));
+				Villes.add(new City().setCity(Float.parseFloat(coords[0]), Float.parseFloat(coords[1])));
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -72,27 +71,23 @@ public class SearchTabu {
 		System.out.println(Arrays.toString(NumOrdreFinal));
 	}
 
-	static Ordre swapCity(List<Ordre> ordre,int j) {
+    private static Ordre swapCity(List<Ordre> ordre,int j) {
 	    //Fonction qui échange deux villes à partir du j-ième élement de la liste
         //En s'assurant que le nouvel ordre n'a pas déjà été traité par la recherche
 		boolean diff = false;
 		boolean diff1=false;
 		boolean controle=false;
-		int cont=0;
-		int id1 = 0;
-		int id2 = 0;
+		int cont = 0;
+		int id1;
+		int id2;
 		int[] ordreTemp =new int[ordre.get(j).getSize()];
 		//On vérifie que les deux villes à échanger sont distinctes
 		while (!(diff & diff1) | controle) {
 			cont++;
 			id1 = (int) (Math.random() * nbVilles);
 			id2 = (int) (Math.random() * nbVilles);
-			if (id1 != id2) {
-				diff = true;
-			}
-			else{
-				diff=false;
-			}
+			//diff = (id1==id2);
+            diff = (id1 != id2);
 			ordreTemp = ordre.get(j).getOrdre().clone();
 			int temp1 = ordreTemp[id1];
 			ordreTemp[id1]=ordreTemp[id2];
@@ -120,7 +115,7 @@ public class SearchTabu {
 		return new Ordre().setOrdre(ordreTemp,ordre.get(j).getSize());
 	}
 
-	static double[][] evalDistance(List<City> Villes) {
+    private static double[][] evalDistance(List<City> Villes) {
 	    //Fonction qui prend comme entrée la liste des villes et qui renvoie
         //Un tableau contenant les distances entre les villes
 		double[][] Distance = new double[nbVilles][nbVilles];
@@ -135,7 +130,7 @@ public class SearchTabu {
 	}
 
 	// Faire fonction calcul du parcours
-	static double evalParcours(int[] ordre, double distance[][]) {
+    private static double evalParcours(int[] ordre, double distance[][]) {
 	    //Fonction qui prend un ordre ainsi que la matrice des distances
         //et qui calcul le chemin parcouru pour l'ordre donné
 		double parcours = 0;

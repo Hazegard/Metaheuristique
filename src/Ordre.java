@@ -1,23 +1,19 @@
 //Classe Ordre, prend comme paramètre un tableau décrivant l'ordre suivi
 public class Ordre {
 
-	int size;
-	int[] ordre;
+	private int size;
+    private int[] ordre;
 	
-	public void setSize(int Size){
-		this.size=Size;
-	}
-	
-	public int getSize(){
+    int getSize(){
 		return this.size;
 	}
-	
-	public Ordre setOrdre(int[] Ordre, int Size){
+
+	Ordre setOrdre(int[] Ordre, int Size){
 		this.ordre=Ordre;
 		this.size = Size;
 		return this;
 	}
-	public int[] getOrdre(){
+	int[] getOrdre(){
 		return this.ordre;
 	}
 	
