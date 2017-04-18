@@ -1,14 +1,12 @@
-/**
- * Created by Max on 12/04/2017.
- */
+//Classe des fourmis
 public class Ants {
-    static int MAX_CITIES = Aco.MAX_CITIES;
-    int currentCity;
-    int nextCIty;
-    int pathIndex;
-    int[] table= new int [MAX_CITIES];
-    int[] path = new int [MAX_CITIES];
-    double tourLength;
+    private static int MAX_CITIES = Aco.MAX_CITIES;
+    private int currentCity;
+    private int nextCIty;
+    private int pathIndex;
+    private int[] table= new int [MAX_CITIES];
+    private int[] path = new int [MAX_CITIES];
+    private double tourLength;
 
     public Ants (int CurrentCity, int NextCity, int PathIndex, int[] Table, int[] Path, double TourLength){
         super();
@@ -24,13 +22,6 @@ public class Ants {
         this.currentCity=CurrentCity;
     }
 
-    void setPath(int[] Path){
-        this.path=Path;
-    }
-
-    void setTable(int[] Table){
-        this.table = table;
-    }
     void setNextCIty(int NextCity){
         this.nextCIty=NextCity;
     }

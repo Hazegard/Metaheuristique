@@ -1,16 +1,13 @@
-/**
- * Created by Max on 12/04/2017.
- */
+//Classe City:
+//Prend comme oaramètre un identifiant ainsi que les cordonnées
 public class City {
-    float x;
-    float y;
-    int id;
+    private float x;
+    private float y;
 
-    public City (float X, float Y, int Id){
+    public City (float X, float Y){
         super();
         this.x=X;
         this.y=Y;
-        this.id=Id;
     }
 
     float getX(){
@@ -19,9 +16,5 @@ public class City {
 
     float getY(){
         return this.y;
-    }
-
-    int getId(){
-        return this.id;
     }
 }
