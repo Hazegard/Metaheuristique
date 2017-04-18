@@ -1,14 +1,14 @@
 #! /bin/bash
-if [ -e src/City.class ]
+if [ -e bin/City.class ]
 then
-rm src/City.class
+rm bin/City.class
 fi
-if [ -e src/Ants.class ]
+if [ -e bin/Ants.class ]
 then
-rm src/Ants.class
+rm bin/Ants.class
 fi
-if [ -e src/Aco.class ]
+if [ -e bin/Aco.class ]
 then
-rm src/Aco.class
+rm bin/Aco.class
 fi
-javac src/City.java src/Ants.java src/Aco.java
+javac -d bin/ src/City.java src/Ants.java src/Aco.java

@@ -42,16 +42,13 @@ static int[] bestPath;
 
 
 static void init(){
-    Aco aco = new Aco();
     int to;
     int ant;
-
     //On récupère une liste des villes à partir d'un fichier CSV
     List<City> Cities = new ArrayList<City>();
     String line = "";
     String csvSplitBy = ";";
     int nbCities = 0;
-    URL path = Aco.class.getResource(csvFile);
     File file = new File("./data/villes.csv");
     try (BufferedReader br = new BufferedReader(new FileReader(file))) {
         while ((line = br.readLine()) != null) {
@@ -73,7 +70,7 @@ static void init(){
         }
     }
     //Calcul de la matrice des distances
-    distance=aco.evalDistance(Cities,nbCities);
+    distance=evalDistance(Cities,nbCities);
 
     //Initialisation des fourmis
     to=0;
@@ -275,7 +272,7 @@ static void updateTrails(){
 
 
 
-double[][] evalDistance(List<City> Villes,int nbCities) {
+static double[][] evalDistance(List<City> Villes,int nbCities) {
     //Calcul une matrice des distance en ayant pour entrée la liste des villes avec leurs coordonnées
     double[][] Distance = new double[nbCities][nbCities];
     for (int i = 0; i < nbCities - 1; i++) {
