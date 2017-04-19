@@ -5,3 +5,4 @@ then
 	exit
 fi
 java -cp bin/. Aco
+java -cp bin/. SearchTabu

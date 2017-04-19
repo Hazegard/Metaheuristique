@@ -6,4 +6,5 @@ if errorlevel 1 (
 	exit /B
 )
 java -cp bin\. Aco
+java -cp bin\. SearchTabu
 pause

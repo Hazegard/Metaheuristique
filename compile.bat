@@ -14,10 +14,18 @@ if exist bin\Ants.class (
 if exist bin\Aco.class (
 	del bin\Aco.class
 )
+if exist bin\Ordre.class (
+	del bin\Ordre.class
+)
+if exist bin\SearchTabu.class (
+	del bin\SearchTabu.class
+)
 if exist bin\City.class (
 	del bin\City.class
 )
+
 javac -d bin\ src\City.java src\Ants.java src\Aco.java
+javac -d bin\ src\City.java src\Ordre.java src\SearchTabu.java
 
 echo Compilation effectuee avec succes
 pause

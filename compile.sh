@@ -13,6 +13,7 @@ if [ -e bin/City.class ]
 then
 rm bin/City.class
 fi
+
 if [ -e bin/Ants.class ]
 then
 rm bin/Ants.class
@@ -22,3 +23,14 @@ then
 rm bin/Aco.class
 fi
 javac -d bin/ src/City.java src/Ants.java src/Aco.java
+
+if [ -e bin/Ordre.class ]
+then
+rm bin/Ordre.class
+fi
+if [ -e bin/SearchTabu.class ]
+then
+rm bin/SearchTabu.class
+fi
+javac -d bin/ src/City.java src/Ordre.java src/SearchTabu.java
+

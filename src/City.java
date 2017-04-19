@@ -1,5 +1,6 @@
 //Classe City:
 //Prend comme oaramètre un identifiant ainsi que les cordonnées
+
 public class City {
     private float x;
     private float y;
@@ -16,5 +17,10 @@ public class City {
 
     float getY(){
         return this.y;
+    }
+	City setCity(float X, float Y){
+		this.x=X;
+		this.y=Y;
+		return this;
     }
 }
