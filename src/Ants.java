@@ -25,6 +25,7 @@ public class Ants {
     void setNextCIty(int NextCity){
         this.nextCIty=NextCity;
     }
+
     void setPathIndex(int PathIndex){
         this.pathIndex=PathIndex;
     }
