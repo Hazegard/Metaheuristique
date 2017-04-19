@@ -91,20 +91,20 @@ public class Aco {
                 ants[ant].setOnePath(-1, i);
                 ants[ant].setOneTable(0, i);
             }
+            //Si la fourmis a atteint sa dernière ville
+            //ON réinitialise la ville
             if (next == MAX_CITIES) {
                 next = 0;
             }
             ants[ant].setCurrentCity(next++);
             ants[ant].setPathIndex(1);
             ants[ant].setOnePath(ants[ant].getCurrentCity(), 0);
-
             ants[ant].setOneTable(1, ants[ant].getCurrentCity());
         }
     }
 
     private static int selectNextCity(int ant) {
         //Choix de la prochaine ville
-        //int prev, next;
         double denom = 0;
         int prev = ants[ant].getCurrentCity();
         for (int next = 0; next < MAX_CITIES; next++) {
@@ -140,9 +140,9 @@ public class Aco {
                 ants[k].setOneTable(1, ants[k].getNextCIty());
                 ants[k].setOnePath(ants[k].getNextCIty(), ants[k].getPathIndex());
                 ants[k].setPathIndex(ants[k].getPathIndex() + 1);
-
                 ants[k].setTourLength(ants[k].getTourLength() + distance[ants[k].getCurrentCity()][ants[k].getNextCIty()]);
-
+                //Gestion du cas d'un déplacement entre la dernière ville
+                //et la première ville
                 if (ants[k].getPathIndex() == MAX_CITIES) {
                     ants[k].setTourLength(ants[k].getTourLength() + distance[ants[k].getPath()[MAX_CITIES - 1]][ants[k].getPath()[0]]);
                 }
@@ -170,7 +170,7 @@ public class Aco {
         }
     }
 
-    private static void updateTrails() {
+    private static void updatePhero() {
         //Mise à jour des phéromones sur chaque ville
         for (int prev = 0; prev < MAX_CITIES; prev++) {
             for (int next = 0; next < MAX_CITIES; next++) {
@@ -234,7 +234,7 @@ public class Aco {
         while (curTime++ < MAX_TIME) {
             if (moveAnts() == 0) {
                 sortAnts();
-                updateTrails();
+                updatePhero();
                 if (curTime != MAX_TIME) {
                     resetAnts();
                 }
