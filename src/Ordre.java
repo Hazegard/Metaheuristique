@@ -16,6 +16,4 @@ public class Ordre {
 	int[] getOrdre(){
 		return this.ordre;
 	}
-	
-	
 }

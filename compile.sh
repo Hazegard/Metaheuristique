@@ -1,4 +1,11 @@
 #! /bin/bash
+if [ -z "$(which javac)" ]
+then
+echo "Javac n'a pas été trouvé dans PATH"
+exit
+fi
+
+
 if ! [ -d bin/ ]
 then
 mkdir bin
