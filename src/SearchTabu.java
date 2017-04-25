@@ -105,7 +105,6 @@ public class SearchTabu {
 				else{
 					diff1=true;
 				}
-
 			}
 			//Si on tourne en boucle
 			if(cont>50){
